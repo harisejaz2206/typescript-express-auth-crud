@@ -6,19 +6,28 @@ export interface IPost extends Document {
   author: string;
 }
 
-const PostSchema: Schema = new Schema({
-  title: {
-    type: String,
-    required: true,
+const PostSchema: Schema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    body: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    deletedAt: {
+      type: Date,
+      require: false,
+    },
   },
-  body: {
-    type: String,
-    required: true,
-  },
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 export default mongoose.model<IPost>("Post", PostSchema);

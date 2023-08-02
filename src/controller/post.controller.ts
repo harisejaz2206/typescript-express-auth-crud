@@ -4,95 +4,6 @@ import Post from "../models/Post";
 
 class PostController {
   /**
-   * @swagger
-   * /posts:
-   *   get:
-   *     summary: Returns the list of all the posts
-   *     tags: [Posts]
-   *     responses:
-   *       200:
-   *         description: The list of the posts
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Post'
-   *
-   *   post:
-   *     summary: Create a new post
-   *     tags: [Posts]
-   *     requestBody:
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             $ref: '#/components/schemas/Post'
-   *     responses:
-   *       201:
-   *         description: The post was successfully created
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Post'
-   *
-   * /posts/{id}:
-   *   get:
-   *     summary: Get the post by id
-   *     tags: [Posts]
-   *     parameters:
-   *       - in: path
-   *         name: id
-   *         schema:
-   *           type: string
-   *         required: true
-   *         description: The post id
-   *     responses:
-   *       200:
-   *         description: The post description by id
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Post'
-   *
-   *   delete:
-   *     summary: Remove the post by id
-   *     tags: [Posts]
-   *     parameters:
-   *       - in: path
-   *         name: id
-   *         schema:
-   *           type: string
-   *         required: true
-   *         description: The post id
-   *     responses:
-   *       200:
-   *         description: The post was deleted
-   *
-   *   put:
-   *     summary: Update the post by id
-   *     tags: [Posts]
-   *     parameters:
-   *       - in: path
-   *         name: id
-   *         schema:
-   *           type: string
-   *         required: true
-   *         description: The post id
-   *     requestBody:
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             $ref: '#/components/schemas/Post'
-   *     responses:
-   *       200:
-   *         description: The post was updated
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/Post'
-   */
-
-  /**
    * @description getAllPosts - Async function to get all posts.
    *
    * @param {Request} req - Express request object.
@@ -103,7 +14,7 @@ class PostController {
    */
   async getAllPosts(req: Request, res: Response, next: NextFunction) {
     try {
-      const posts: IPost[] = await Post.find();
+      const posts: IPost[] = await Post.find({ deletedAt: { $exists: false } });
 
       let response = createResponse(
         201,
@@ -199,7 +110,9 @@ class PostController {
    */
   async deleteUserById(req: Request, res: Response, next: NextFunction) {
     try {
-      const removedUser = await Post.findByIdAndRemove(req.params.id);
+      const removedUser = await Post.findByIdAndUpdate(req.params.id, {
+        deletedAt: new Date(),
+      });
 
       let response = createResponse(
         201,
