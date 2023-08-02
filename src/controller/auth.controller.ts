@@ -24,7 +24,12 @@ class AuthController {
     try {
       let user: IUser = await User.findOne({ email });
       if (user) {
-        return res.status(400).json({ message: "User already exists" });
+        return res.status(400).json({
+          statusCode: 400,
+          status: false,
+          message: "User already exists!",
+          payload: { user },
+        });
       }
       user = await User.create({
         username,
@@ -33,12 +38,13 @@ class AuthController {
       });
 
       // Generate JWT token after registration
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: "1h",
-      });
       // const token = jwt.sign(user, process.env.JWT_SECRET_KEY, {
-      //   expiresIn: "1h",
+      //   expiresIn: process.env.JWT_EXPIRATION_TIME,
       // });
+      const tokenPayload = { id: user._id, email: user.email }; // plain JS object
+      const token = jwt.sign(tokenPayload, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRATION_TIME,
+      });
 
       return res.status(201).json({
         statusCode: 201,
@@ -71,18 +77,30 @@ class AuthController {
     try {
       const user: IUser = await User.findOne({ email });
       if (!user) {
-        return res.status(400).json({ message: "User doesn't exist" });
+        res.status(400).json({
+          statusCode: 400,
+          status: false,
+          message: "User doesn't exist",
+        });
       }
 
       // Use bcrypt.compare to check password
       const isMatch = await bcrypt.compare(password, user.password.toString());
 
       if (!isMatch) {
-        return res.status(400).json({ message: "Incorrect password" });
+        return res.status(400).json({
+          statusCode: 400,
+          status: false,
+          message: "Incorrect Password",
+        });
       }
 
-      const token = jwt.sign(user, process.env.JWT_SECRET_KEY, {
-        expiresIn: "1h",
+      // const token = jwt.sign(user, process.env.JWT_SECRET_KEY, {
+      //   expiresIn: process.env.JWT_EXPIRATION_TIME,
+      // });
+      const tokenPayload = { id: user._id, email: user.email }; // plain JS object
+      const token = jwt.sign(tokenPayload, process.env.JWT_SECRET_KEY, {
+        expiresIn: process.env.JWT_EXPIRATION_TIME,
       });
 
       res
@@ -90,7 +108,11 @@ class AuthController {
         .json({ message: "Logged in successfully", payload: { token } });
     } catch (error) {
       console.log("The error is: ", error.message);
-      res.status(500).json({ message: "Server Error" });
+      return res.status(500).json({
+        statusCode: 500,
+        status: false,
+        message: "Server Error",
+      });
     }
   }
 }

@@ -6,6 +6,9 @@
         "outDir": "dist",
         "sourceMap": true,
         "noImplicitAny": true,
+        "removeComments": false
     },
-    "include": ["src/**/*"]
+    //"include": ["src/**/*"]
+    // "include": ["./src/**/*"]
+    "include": ["./src/**/*"]
 }

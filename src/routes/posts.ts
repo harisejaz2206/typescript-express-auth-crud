@@ -1,5 +1,6 @@
 import express from "express";
 import postController from "../controller/post.controller";
+import { createPostValidation } from "../validation/post";
 
 const router = express.Router();
 
@@ -15,11 +16,11 @@ router.get("/:id", postController.getPostById);
 
 // POST: Create a new user
 // This route will call the createUser function in the user controller
-router.post("/", postController.createPost);
+router.post("/", createPostValidation, postController.create);
 
 // PATCH: Update specific fields of a user by their ID
 // This route will call the updateUserById function in the user controller
-router.put("/:id", postController.update);
+router.put("/:id", createPostValidation, postController.update);
 
 // DELETE: Remove a specific user by their ID
 // This route will call the deleteUserById function in the user controller

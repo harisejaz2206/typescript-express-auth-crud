@@ -39,22 +39,31 @@ function authenticateToken(
 ) {
   const authHeader: string | undefined = req.headers["authorization"];
   const token: string | undefined = authHeader && authHeader.split(" ")[1];
+  if (token == null) {
+    return res.json({
+      statusCode: 401,
+      message: "Authenticated User",
+      status: false,
+    });
+  } else {
+    jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY as string,
+      (err: VerifyErrors | null, user: IUser | undefined) => {
+        if (err) {
+          return res.sendStatus(401).json({
+            statusCode: 401,
+            message: "Authenticated User",
+            status: false,
+          });
+        }
 
-  if (token == null) return res.sendStatus(401);
+        req.user = user;
 
-  jwt.verify(
-    token,
-    process.env.TOKEN_SECRET as string,
-    (err: VerifyErrors | null, user: IUser | undefined) => {
-      console.log(err);
-
-      if (err) return res.sendStatus(403);
-
-      req.user = user;
-
-      next();
-    }
-  );
+        next();
+      }
+    );
+  }
 }
 
 export default authenticateToken;

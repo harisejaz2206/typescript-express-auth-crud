@@ -6,12 +6,54 @@ import authContoller from "../controller/auth.controller";
 
 // Auth Routes
 
-// POST: Register a new user into the database
-// This route will call the register function in the user controller
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Registration successful
+ *       400:
+ *         description: Registration failed
+ */
 router.post("/register", authContoller.register);
 
-// POST: Login a user
-// This route will call the login function in the user controller
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Log in a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       401:
+ *         description: Login failed
+ */
 router.post("/login", authContoller.login);
 
 export default router;
