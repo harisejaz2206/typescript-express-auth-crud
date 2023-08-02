@@ -44,7 +44,7 @@ class AuthController {
         statusCode: 201,
         status: true,
         message: "User registered successfully",
-        payload: token,
+        payload: { token },
       });
     } catch (error) {
       console.log("The error is: ", error);
