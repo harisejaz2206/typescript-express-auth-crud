@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "nodemon",
-    "test": "mocha './src/__test__/auth/register.test.js'"
+    "test": "mocha --timeout 10000 -r ts-node/register ./src/__test__/**/*.spec.ts"
 
   },
   "keywords": [],

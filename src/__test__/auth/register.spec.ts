@@ -5,13 +5,13 @@ import { expect } from "chai";
 describe("Register API", () => {
   it("should register a new user", (done) => {
     const userData = {
-      username: "newuser",
-      email: "newuser@example.com",
-      password: "newuserpassword",
+      username: "harrypotter",
+      email: "harrypotter@gmail.com",
+      password: "harry",
     };
 
     request(app)
-      .post("/api/register")
+      .post("/api/v1/auth/register")
       .send(userData)
       .expect(201)
       .end((err, res) => {
@@ -26,13 +26,13 @@ describe("Register API", () => {
 
   it("should return 400 for an already registered user", (done) => {
     const existingUser = {
-      username: "existinguser",
-      email: "existinguser@example.com",
-      password: "existinguserpassword",
+      username: "usman",
+      email: "usman@gmail.com",
+      password: "usman123",
     };
 
     request(app)
-      .post("/api/register")
+      .post("/api/v1/auth/register")
       .send(existingUser)
       .expect(400)
       .end((err, res) => {
