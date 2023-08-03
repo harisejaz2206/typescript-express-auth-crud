@@ -86,3 +86,5 @@ app.use("/api/v1/posts", authenticateToken, postRoute);
 server.listen(port, () => {
   console.log(`Server is running on ${protocol}://localhost:${port}`);
 });
+
+export default app;
