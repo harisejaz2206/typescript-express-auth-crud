@@ -45,11 +45,7 @@ dotenv.config();
 // Middleware
 app.use(bodyParser.json()); // Parse JSON bodies in the request
 
-app.use(
-  cors({
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(
   "/api-docs",
