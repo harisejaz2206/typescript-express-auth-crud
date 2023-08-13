@@ -1,5 +1,3 @@
-// src/services/emailService.ts
-
 import nodemailer from "nodemailer";
 import mailConfig from "../config/mail.config";
 

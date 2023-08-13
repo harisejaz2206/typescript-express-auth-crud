@@ -1,32 +1,39 @@
 // src/routes/emailRoutes.ts
 
 import express from "express";
-import sendEmail from "services/email.service";
-
-type EmailRequest = {
-  from: string;
-  to: string;
-  subject: string;
-  text: string;
-};
+import { send } from "../controller/email.controller";
 
 const router = express.Router();
 
-router.post("/send-email", (req, res) => {
-  const options: EmailRequest = {
-    from: req.body.from || "default-sender@example.com", // You can set a default sender
-    to: req.body.to,
-    subject: req.body.subject,
-    text: req.body.text,
-  };
-
-  sendEmail(options, (error, info) => {
-    if (error) {
-      res.status(500).send(error.message);
-    } else {
-      res.status(200).send("Email sent: " + info.response);
-    }
-  });
-});
+/**
+ * @swagger
+ * /send-email:
+ *   post:
+ *     summary: Send an email
+ *     parameters:
+ *       - in: body
+ *         name: email
+ *         schema:
+ *           type: object
+ *           required:
+ *             - to
+ *             - subject
+ *             - text
+ *           properties:
+ *             from:
+ *               type: string
+ *             to:
+ *               type: string
+ *             subject:
+ *               type: string
+ *             text:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Email sent successfully
+ *       500:
+ *         description: Failed to send the email
+ */
+router.post("/send-email", send);
 
 export default router;

@@ -10,6 +10,7 @@ import swaggerJsdoc from "swagger-jsdoc";
 // Importing Routes
 import authRoute from "./routes/auth";
 import postRoute from "./routes/posts";
+import emailRoutes from "./routes/email.routes";
 import authenticateToken from "./middleware/authMiddleware";
 
 const swaggerOptions = {
@@ -78,6 +79,7 @@ mongoose.connection.once("open", () => {
 // Address for REST API
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/posts", authenticateToken, postRoute);
+app.use("/api/v1/email", emailRoutes);
 
 server.listen(port, () => {
   console.log(`Server is running on ${protocol}://localhost:${port}`);
