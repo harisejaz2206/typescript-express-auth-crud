@@ -6,7 +6,6 @@
   "scripts": {
     "start": "nodemon",
     "test": "mocha --timeout 10000 -r ts-node/register ./src/__test__/**/*.spec.ts"
-
   },
   "keywords": [],
   "author": "",
@@ -22,6 +21,7 @@
     "@types/joi": "^17.2.3",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/mocha": "^10.0.1",
+    "@types/nodemailer": "^6.4.9",
     "@types/supertest": "^2.0.12",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
@@ -42,6 +42,7 @@
     "mocha": "^10.2.0",
     "mongodb": "^5.7.0",
     "mongoose": "^7.4.1",
+    "nodemailer": "^6.9.4",
     "supertest": "^6.3.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"

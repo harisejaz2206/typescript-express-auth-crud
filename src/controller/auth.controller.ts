@@ -73,7 +73,7 @@ class AuthController {
    * @returns {Promise<Response>} JSON response with a status and a message about login status.
    */
   async login(req: Request, res: Response, next: NextFunction) {
-    console.log("inside", req.body);
+    console.log("inside the login api. The request.body: ", req.body);
     const { email, password } = req.body;
 
     try {
@@ -116,12 +116,10 @@ class AuthController {
         email: user.email,
       };
 
-      res
-        .status(200)
-        .json({
-          message: "Logged in successfully",
-          payload: { token, user: userResponse },
-        });
+      res.status(200).json({
+        message: "Logged in successfully",
+        payload: { token, user: userResponse },
+      });
       console.log("You have logged in with the email:", email);
     } catch (error) {
       console.log("The error is: ", error.message);
