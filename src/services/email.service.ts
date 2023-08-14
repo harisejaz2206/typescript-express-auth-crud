@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import mailConfig from "../config/mail.config";
+import mailConfig from "../configs/mail.config";
 
 type EmailOptions = {
   from: string;

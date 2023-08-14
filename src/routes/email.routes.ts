@@ -7,7 +7,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /send-email:
+ * /email/send-email:
  *   post:
  *     summary: Send an email
  *     parameters:
