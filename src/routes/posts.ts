@@ -138,6 +138,6 @@ router.put("/:id", createPostValidation, postController.update);
 
 // DELETE: Remove a specific user by their ID
 // This route will call the deleteUserById function in the user controller
-router.delete("/:id", postController.deleteUserById);
+router.delete("/:id", postController.deletePostById);
 
 export default router;

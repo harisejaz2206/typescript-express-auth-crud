@@ -36,7 +36,7 @@ class PostController {
       };
 
       let response = createResponse(
-        201,
+        200,
         true,
         "Received all posts successfully!",
         payload
@@ -127,7 +127,7 @@ class PostController {
    *
    * @returns JSON response with a status and a message about deleted post.
    */
-  async deleteUserById(req: Request, res: Response, next: NextFunction) {
+  async deletePostById(req: Request, res: Response, next: NextFunction) {
     try {
       const removedUser = await Post.findByIdAndUpdate(req.params.id, {
         deletedAt: new Date(),
