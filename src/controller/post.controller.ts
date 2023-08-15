@@ -104,7 +104,7 @@ class PostController {
         201,
         true,
         "Created new post successfully!",
-        {}
+        { post: newPost }
       );
       return res.status(201).json(response);
     } catch (error) {
