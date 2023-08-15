@@ -118,9 +118,16 @@ class PostController {
         201,
         true,
         `Post with id ${req.params.id} deleted.`,
-        {}
+        { id: req.params.id } // // Include the deleted post's ID in the response payload
       );
-      return res.status(201).json({ response });
+
+      const id = req.params.id;
+      return res.status(201).json({
+        statusCode: 201,
+        status: true,
+        message: `Post is deleted.`,
+        payload: { id },
+      });
     } catch (error) {
       let response = createResponse(
         500,
@@ -157,7 +164,7 @@ class PostController {
         201,
         true,
         `Post with id ${req.params.id} updated.`,
-        {}
+        { updatedPost }
       );
       return res.status(201).json({ response });
     } catch (error) {

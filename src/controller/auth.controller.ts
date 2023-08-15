@@ -4,6 +4,7 @@ import { IResponse } from "interface/response.interface";
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { send } from "./email.controller";
 
 class AuthController {
   /**
@@ -37,6 +38,7 @@ class AuthController {
         email,
         password,
       });
+      send({ from: "", to: "", subject: "", text: "" });
 
       // Generate JWT token after registration
       // const token = jwt.sign(user, process.env.JWT_SECRET_KEY, {
