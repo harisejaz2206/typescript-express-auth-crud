@@ -129,7 +129,7 @@ class PostController {
    */
   async deletePostById(req: Request, res: Response, next: NextFunction) {
     try {
-      const removedUser = await Post.findByIdAndUpdate(req.params.id, {
+      const removedPost = await Post.findByIdAndUpdate(req.params.id, {
         deletedAt: new Date(),
       });
 
@@ -141,12 +141,7 @@ class PostController {
         payload: { id },
       });
     } catch (error) {
-      let response = createResponse(
-        500,
-        false,
-        `Post with id ${req.params.id} not deleted.`,
-        {}
-      );
+      let response = createResponse(500, false, `Post not deleted.`, {});
       return res.status(500).json(response);
     }
   }
@@ -176,7 +171,7 @@ class PostController {
         201,
         true,
         `Post with id ${req.params.id} updated.`,
-        { updatedPost }
+        { post: updatedPost }
       );
       return res.status(201).json(response);
     } catch (error) {
