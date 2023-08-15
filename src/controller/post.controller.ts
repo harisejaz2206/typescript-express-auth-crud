@@ -14,15 +14,34 @@ class PostController {
    */
   async getAllPosts(req: Request, res: Response, next: NextFunction) {
     try {
-      const posts: IPost[] = await Post.find({ deletedAt: { $exists: false } });
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const skip = (page - 1) * limit;
+
+      const posts: IPost[] = await Post.find({ deletedAt: { $exists: false } })
+        .skip(skip)
+        .limit(limit);
+
+      const totalRecords = await Post.find({
+        deletedAt: { $exists: false },
+      }).countDocuments();
+
+      const payload = {
+        posts,
+        paginationInfo: {
+          page,
+          totalPages: Math.ceil(totalRecords / limit),
+          totalRecords,
+        },
+      };
 
       let response = createResponse(
         201,
         true,
         "Received all posts successfully!",
-        { posts }
+        payload
       );
-      return res.status(201).json({ response });
+      return res.status(201).json(response);
     } catch (error) {
       let response = createResponse(
         500,
@@ -30,7 +49,7 @@ class PostController {
         "Did not receive posts sucessfully!",
         {}
       );
-      return res.status(500).json({ response });
+      return res.status(500).json(response);
     }
   }
 
@@ -46,10 +65,10 @@ class PostController {
           "Received post successfully!",
           { post }
         );
-        return res.status(200).json({ response });
+        return res.status(200).json(response);
       } else {
         let response = createResponse(404, false, "Post not found!", {});
-        return res.status(404).json({ response });
+        return res.status(404).json(response);
       }
     } catch (error) {
       let response = createResponse(
@@ -58,7 +77,7 @@ class PostController {
         "Error occurred while retrieving the post!",
         {}
       );
-      return res.status(500).json({ response });
+      return res.status(500).json(response);
     }
   }
 
@@ -87,7 +106,7 @@ class PostController {
         "Created new post successfully!",
         {}
       );
-      return res.status(201).json({ response });
+      return res.status(201).json(response);
     } catch (error) {
       let response = createResponse(
         500,
@@ -95,7 +114,7 @@ class PostController {
         "Did not create post sucessfully!",
         {}
       );
-      return res.status(500).json({ response });
+      return res.status(500).json(response);
     }
   }
 
@@ -114,13 +133,6 @@ class PostController {
         deletedAt: new Date(),
       });
 
-      let response = createResponse(
-        201,
-        true,
-        `Post with id ${req.params.id} deleted.`,
-        { id: req.params.id } // // Include the deleted post's ID in the response payload
-      );
-
       const id = req.params.id;
       return res.status(201).json({
         statusCode: 201,
@@ -135,7 +147,7 @@ class PostController {
         `Post with id ${req.params.id} not deleted.`,
         {}
       );
-      return res.status(500).json({ response });
+      return res.status(500).json(response);
     }
   }
 
@@ -166,7 +178,7 @@ class PostController {
         `Post with id ${req.params.id} updated.`,
         { updatedPost }
       );
-      return res.status(201).json({ response });
+      return res.status(201).json(response);
     } catch (error) {
       let response = createResponse(
         500,
@@ -174,7 +186,7 @@ class PostController {
         `Post with id ${req.params.id} not updated.`,
         {}
       );
-      return res.status(500).json({ response });
+      return res.status(500).json(response);
     }
   }
 }

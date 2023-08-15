@@ -40,6 +40,7 @@ function authenticateToken(
   const authHeader: string | undefined = req.headers["authorization"];
   const token: string | undefined = authHeader && authHeader.split(" ")[1];
   if (token == null) {
+    console.log("Token is null");
     return res.json({
       statusCode: 401,
       message: "Authenticated User",
@@ -51,6 +52,7 @@ function authenticateToken(
       process.env.JWT_SECRET_KEY as string,
       (err: VerifyErrors | null, user: IUser | undefined) => {
         if (err) {
+          console.log("There is error in verifying token", err);
           return res.sendStatus(401).json({
             statusCode: 401,
             message: "Authenticated User",

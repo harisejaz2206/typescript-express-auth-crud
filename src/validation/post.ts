@@ -21,7 +21,6 @@ export const createPostValidation = async (
     const schema = Joi.object({
       title: Joi.string().min(3).max(30).required(),
       body: Joi.string().min(3).max(30).required(),
-      author: Joi.string().required(),
     });
 
     await schema.validateAsync(req.body, { abortEarly: false });
