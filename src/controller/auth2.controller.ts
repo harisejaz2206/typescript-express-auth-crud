@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { send } from "./email.controller";
 
-class AuthController {
+class AuthController2 {
   async register(
     req: Request,
     res: Response,
@@ -36,11 +36,15 @@ class AuthController {
         expiresIn: process.env.JWT_EXPIRATION_TIME,
       });
 
+      res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: Number(process.env.JWT_EXPIRATION_TIME) * 1000, // Convert to milliseconds
+      });
+
       return res.status(201).json({
         statusCode: 201,
         status: true,
         message: "User registered successfully",
-        payload: { token },
       });
     } catch (error) {
       console.log("The error is: ", error);
@@ -91,10 +95,13 @@ class AuthController {
         username: user.username,
         email: user.email,
       };
-
+      res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: Number(process.env.JWT_EXPIRATION_TIME) * 1000, // Convert to milliseconds
+      });
       res.status(200).json({
         message: "Logged in successfully",
-        payload: { token, user: userResponse },
+        payload: { user: userResponse },
       });
       console.log("You have logged in with the email:", email);
     } catch (error) {
@@ -108,4 +115,4 @@ class AuthController {
   }
 }
 
-export default new AuthController();
+export default new AuthController2();

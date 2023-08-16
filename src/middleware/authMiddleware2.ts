@@ -11,8 +11,7 @@ function authenticateToken(
   res: Response,
   next: NextFunction
 ) {
-  const authHeader: string | undefined = req.headers["authorization"];
-  const token: string | undefined = authHeader && authHeader.split(" ")[1];
+  const token: string | undefined = req.cookies["token"];
   if (token == null) {
     console.log("Token is null");
     return res.json({

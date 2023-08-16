@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
+import cookieParser from "cookie-parser";
 
 // Importing Routes
 import authRoute from "./routes/auth";
@@ -47,6 +48,7 @@ dotenv.config();
 app.use(bodyParser.json()); // Parse JSON bodies in the request
 
 app.use(cors());
+app.use(cookieParser());
 
 app.use(
   "/api-docs",
